@@ -44,16 +44,37 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import AddPlace from './pages/AddPlace';
+import { useEffect, useState } from 'react';
+import { Place } from './models/Place';
 
 setupIonicReact();
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+  const [places, setPlaces] = useState<Place[]>([]);
+
+  const handleAddPlace = (newPlace: Place) => {
+    setPlaces([...places, newPlace]);
+    localStorage.setItem('places', JSON.stringify([...places, newPlace]));
+  };
+
+  useEffect(() => {
+    const storedPlaces = localStorage.getItem('places');
+    if (storedPlaces) {
+      setPlaces(JSON.parse(storedPlaces));
+    }
+  }, []);
+
+  return (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/tab1">
-            <Tab1 />
+            <Tab1 places={places}/>
+          </Route>
+          <Route exact path="/add-place">
+            <AddPlace onAddPlace={handleAddPlace} />
           </Route>
           <Route exact path="/tab2">
             <Tab2 />
@@ -82,6 +103,7 @@ const App: React.FC = () => (
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+)
+};
 
 export default App;

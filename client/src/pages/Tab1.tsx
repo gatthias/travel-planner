@@ -1,24 +1,37 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Tab1.css';
+import React from 'react';
+import { Place } from '../models/Place';
+import { IonList, IonItem, IonLabel, IonFab, IonFabButton, IonIcon } from '@ionic/react';
+import { addCircleOutline } from 'ionicons/icons';
 
-const Tab1: React.FC = () => {
+interface Tab1Props {
+  places: Place[];
+}
+
+const Tab1: React.FC<Tab1Props> = ({ places }) => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
-      </IonContent>
-    </IonPage>
+    <div>
+      <h1>Travel Planner</h1>
+      <h2>Places</h2>
+      <IonList>
+        {places.map((place) => (
+          <IonItem key={place.id}>
+            <IonLabel>
+              <h3>{place.title}</h3>
+              <p>{place.description}</p>
+              <p>Coordinates: {place.coordinates.latitude}, {place.coordinates.longitude}</p>
+              <p>Date: {place.date ? new Date(place.date).toDateString() : 'N/A'}</p>
+              <p>Notes: {place.notes}</p>
+              <p>Constraints: {place.constraints}</p>
+            </IonLabel>
+          </IonItem>
+        ))}
+      </IonList>
+      <IonFab vertical="bottom" horizontal="end" slot="fixed">
+        <IonFabButton href="/add-place">
+          <IonIcon icon={addCircleOutline} />
+        </IonFabButton>
+      </IonFab>
+    </div>
   );
 };
 
