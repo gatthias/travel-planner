@@ -24,6 +24,15 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
   const [placeId, setPlaceId] = useState(initialPlace?.gcpPlaceId);
   const [placeJson, setPlaceJson] = useState('');
 
+  useEffect(() => {
+    if (initialPlace && initialPlace.coordinates) {
+      setSelectedLocation({
+        lat: initialPlace.coordinates.latitude,
+        lng: initialPlace.coordinates.longitude,
+      });
+    }
+  }, [initialPlace]);
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
     //@ts-ignore
