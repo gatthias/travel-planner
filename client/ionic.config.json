@@ -1,0 +1,7 @@
+{
+  "name": "Travel Planner",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
