@@ -1,6 +1,7 @@
 import React from 'react';
 import AddPlaceForm from '../components/AddPlaceForm';
 import { Place } from '../models/Place';
+import { IonPage, IonBackButton, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/react';
 
 interface AddPlacePageProps {
   onAddPlace: (place: Place) => void;
@@ -8,10 +9,19 @@ interface AddPlacePageProps {
 
 const AddPlace: React.FC<AddPlacePageProps> = ({ onAddPlace }) => {
   return (
-    <div>
-      <h1>Add New Place</h1>
-      <AddPlaceForm onAddPlace={onAddPlace} />
-    </div>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonBackButton />
+          <IonTitle>Add New Place</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+        <div>
+          <AddPlaceForm onAddPlace={onAddPlace} />
+        </div>
+      </IonContent>
+    </IonPage>
   );
 };
 

@@ -14,6 +14,10 @@ import { ellipse, square, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
+import AddPlace from './pages/AddPlace';
+import EditPlace from './pages/EditPlace';
+import { useEffect, useState } from 'react';
+import { Place } from './models/Place';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -44,9 +48,6 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import AddPlace from './pages/AddPlace';
-import { useEffect, useState } from 'react';
-import { Place } from './models/Place';
 
 setupIonicReact();
 
@@ -58,6 +59,16 @@ const App: React.FC = () => {
     localStorage.setItem('places', JSON.stringify([...places, newPlace]));
   };
 
+  const handleUpdatePlace = (updatedPlace: Place) => {
+    const newPlaces = places.map((place) => {
+      if (place.id === updatedPlace.id) {
+        return updatedPlace;
+      }
+      return place;
+    });
+    setPlaces(newPlaces);
+    localStorage.setItem('places', JSON.stringify(newPlaces));
+  };
   useEffect(() => {
     const storedPlaces = localStorage.getItem('places');
     if (storedPlaces) {
@@ -75,6 +86,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/add-place">
             <AddPlace onAddPlace={handleAddPlace} />
+          </Route>
+          <Route path="/edit/:id">
+            <EditPlace onUpdatePlace={handleUpdatePlace} /> 
           </Route>
           <Route exact path="/tab2">
             <Tab2 />
