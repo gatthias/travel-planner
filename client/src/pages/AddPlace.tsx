@@ -1,7 +1,7 @@
 import React from 'react';
 import AddPlaceForm from '../components/AddPlaceForm';
 import { Place } from '../models/Place';
-import { IonPage, IonBackButton, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/react';
+import { IonPage, IonBackButton, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons } from '@ionic/react';
 
 interface AddPlacePageProps {
   onAddPlace: (place: Place) => void;
@@ -12,7 +12,9 @@ const AddPlace: React.FC<AddPlacePageProps> = ({ onAddPlace }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonBackButton />
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
           <IonTitle>Add New Place</IonTitle>
         </IonToolbar>
       </IonHeader>

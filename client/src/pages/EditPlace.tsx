@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Place } from '../models/Place';
 import { useParams } from 'react-router-dom';
 import AddPlaceForm from '../components/AddPlaceForm';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonBackButton, IonContent } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonBackButton, IonContent, IonButtons } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
 
 interface EditPlaceProps {
@@ -29,7 +29,9 @@ const EditPlace: React.FC<EditPlaceProps> = ({ onUpdatePlace }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonBackButton />
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
           <IonTitle>Edit Place</IonTitle>
         </IonToolbar>
       </IonHeader>
