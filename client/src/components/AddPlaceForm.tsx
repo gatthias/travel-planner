@@ -83,18 +83,34 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-      <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
-      <input type="text" ref={autocompleteRef} placeholder="Search Location" />
-      <input type="text" value={latitude} onChange={(e) => setLatitude(e.target.value)} placeholder="Latitude" />
-      <input type="text" value={longitude} onChange={(e) => setLongitude(e.target.value)} placeholder="Longitude" />
-      <input type="date" value={date ? new Date(date).toISOString().slice(0, 10) : ''} onChange={(e) => setDate(new Date(e.target.value))} />
-      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notes" />
-      <textarea value={constraints} onChange={(e) => setConstraints(e.target.value)} placeholder="Constraints" />
-      <button type="submit">Save Place</button>
+    <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow-md">
+      <div className="mb-4">
+        <label htmlFor="title" className="block text-gray-700 font-bold mb-2">Title</label>
+        <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Description</label>
+        <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="location" className="block text-gray-700 font-bold mb-2">Location</label>
+        <input type="text" id="location" ref={autocompleteRef} placeholder="Search Location" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="date" className="block text-gray-700 font-bold mb-2">Date</label>
+        <input type="date" id="date" value={date ? new Date(date).toISOString().slice(0, 10) : ''} onChange={(e) => setDate(new Date(e.target.value))} className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="notes" className="block text-gray-700 font-bold mb-2">Notes</label>
+        <textarea id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notes" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="constraints" className="block text-gray-700 font-bold mb-2">Constraints</label>
+        <textarea id="constraints" value={constraints} onChange={(e) => setConstraints(e.target.value)} placeholder="Constraints" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save Place</button>
       {isLoaded && (
-        <div ref={mapRef} style={{ height: '300px', width: '100%' }}>
+        <div ref={mapRef} className="mt-4" style={{ height: '300px', width: '100%' }}>
           <GoogleMap
             center={selectedLocation || { lat: 0, lng: 0 }}
             zoom={10}
@@ -114,7 +130,7 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
           </div>
         </IonAccordion>
       </IonAccordionGroup>
-      
+
     </form>
   );
 };
