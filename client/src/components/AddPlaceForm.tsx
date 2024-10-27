@@ -3,6 +3,7 @@ import { Place } from '../models/Place';
 import crypto from 'crypto';
 import { GoogleMap, useLoadScript, Marker, Autocomplete } from '@react-google-maps/api';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { IonAccordionGroup, IonAccordion, IonItem, IonLabel } from '@ionic/react';
 
 const libraries = ['places'];
 
@@ -20,9 +21,11 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
   const [notes, setNotes] = useState(initialPlace?.notes || '');
   const [constraints, setConstraints] = useState(initialPlace?.constraints || '');
   const [selectedLocation, setSelectedLocation] = useState<google.maps.LatLngLiteral | null>(null);
+  const [placeId, setPlaceId] = useState(initialPlace?.gcpPlaceId);
+  const [placeJson, setPlaceJson] = useState('');
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
     //@ts-ignore
     libraries,
   });
@@ -35,6 +38,8 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
       const autocomplete = new window.google.maps.places.Autocomplete(autocompleteRef.current);
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
+        setPlaceJson(JSON.stringify(place, null, 2));
+        setPlaceId(place.place_id);
         if (place.geometry) {
           setSelectedLocation(place.geometry.location?.toJSON() ?? null);
           setLatitude(place.geometry.location?.lat().toString() ?? '');
@@ -54,6 +59,7 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
       date,
       notes,
       constraints,
+      gcpPlaceId: placeId,
     };
     onAddPlace(newPlace);
     setTitle('');
@@ -64,6 +70,7 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
     setNotes('');
     setConstraints('');
     setSelectedLocation(null);
+    setPlaceId(undefined);
   };
 
   return (
@@ -88,6 +95,17 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
           </GoogleMap>
         </div>
       )}
+      <IonAccordionGroup>
+        <IonAccordion value="first">
+          <IonItem slot="header" color="light">
+            <IonLabel>Place details</IonLabel>
+          </IonItem>
+          <div className="ion-padding" slot="content">
+            <pre>{placeJson}</pre>
+          </div>
+        </IonAccordion>
+      </IonAccordionGroup>
+      
     </form>
   );
 };
