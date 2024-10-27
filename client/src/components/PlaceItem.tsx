@@ -1,6 +1,6 @@
 import React from 'react';
 import { Place } from '../models/Place';
-import { IonItem, IonLabel, IonButton } from '@ionic/react';
+import { IonItem, IonLabel } from '@ionic/react';
 
 interface PlaceItemProps {
   place: Place;
@@ -15,7 +15,6 @@ const PlaceItem: React.FC<PlaceItemProps> = ({ place, onSelectPlace }) => {
         <p>{place.description}</p>
         <p>Date: {place.date ? new Date(place.date).toDateString() : 'N/A'}</p>
       </IonLabel>
-      <IonButton routerLink={`/edit/${place.id}`}>Edit</IonButton>
     </IonItem>
   );
 };

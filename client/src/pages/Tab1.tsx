@@ -41,6 +41,7 @@ const Tab1: React.FC<Tab1Props> = ({ places }) => {
             <IonToolbar>
               <IonTitle>{selectedPlace?.title}</IonTitle>
               <IonButtons slot="end">
+                <IonButton routerLink={`/edit/${selectedPlace?.id}`} onClick={() => setSelectedPlace(null)}>Edit</IonButton>
                 <IonButton onClick={() => setSelectedPlace(null)}>Close</IonButton>
               </IonButtons>
             </IonToolbar>
