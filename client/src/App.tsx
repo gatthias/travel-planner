@@ -56,6 +56,7 @@ const App: React.FC = () => {
   const [places, setPlaces] = useState<Place[]>([]);
 
   const handleAddPlace = (newPlace: Place) => {
+    alert('Adding place');
     PlaceService.addPlace(newPlace);
     setPlaces([...places, newPlace]);
   };
@@ -72,10 +73,11 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    const storedPlaces = PlaceService.getPlaces();
-    if (storedPlaces) {
-      setPlaces(storedPlaces);
-    }
+    const fetchPlaces = async () => {
+      const fetchedPlaces = await PlaceService.getPlaces();
+      setPlaces(fetchedPlaces);
+    };
+    fetchPlaces();
   }, []);
 
   return (

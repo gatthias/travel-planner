@@ -13,10 +13,13 @@ interface EditPlaceProps {
 const EditPlace: React.FC<EditPlaceProps> = ({ onUpdatePlace }) => {
   const { id } = useParams<{ id: string }>();
   const [place, setPlace] = useState<Place | null>(null);
-  
   useEffect(() => {
-    const place = PlaceService.getPlace(id);
-    setPlace(place || null);
+    const fetchPlace = async () => {
+      const places = await PlaceService.getPlaces();
+      const foundPlace = places.find((p: Place) => p.id === id);
+      setPlace(foundPlace || null);
+    };
+    fetchPlace();
   }, [id]);
 
   const handleUpdatePlace = (updatedPlace: Place) => {

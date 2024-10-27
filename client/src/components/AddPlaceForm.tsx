@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Place } from '../models/Place';
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { GoogleMap, useLoadScript, Marker, Autocomplete } from '@react-google-maps/api';
 import { useJsApiLoader } from '@react-google-maps/api';
 import { IonAccordionGroup, IonAccordion, IonItem, IonLabel } from '@ionic/react';
@@ -61,7 +61,7 @@ const AddPlaceForm: React.FC<AddPlaceFormProps> = ({ onAddPlace, initialPlace })
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newPlace: Place = {
-      id: initialPlace ? initialPlace.id : crypto.randomUUID(),
+      id: initialPlace ? initialPlace.id : uuidv4(),
       title,
       description,
       coordinates: { latitude: parseFloat(latitude), longitude: parseFloat(longitude) },

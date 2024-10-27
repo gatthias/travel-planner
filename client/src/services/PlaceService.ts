@@ -1,33 +1,38 @@
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, updateDoc, doc, deleteDoc, setDoc } from "firebase/firestore";
 import { Place } from '../models/Place';
+import firebaseConfig from '../firebaseConfig';
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const placesCollection = collection(db, 'places');
 
 export class PlaceService {
-  static getPlaces(): Place[] {
-    const storedPlaces = localStorage.getItem('places');
-    return storedPlaces ? JSON.parse(storedPlaces) : [];
+  static async getPlaces(): Promise<Place[]> {
+    const querySnapshot = await getDocs(placesCollection);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Place[];
   }
 
-  static getPlace(id: string): Place | null {
-    const places = this.getPlaces();
-    const foundPlace = places.find((p: Place) => p.id === id);
-    return foundPlace || null;
+  static async addPlace(place: Place): Promise<void> {
+    try {
+      const placeDocRef = doc(db, 'places', place.id);
+      await setDoc(placeDocRef, place);
+    } catch (error) {
+      alert('Error adding place');
+    }
+    
   }
 
-  static addPlace(place: Place): void {
-    const places = this.getPlaces();
-    localStorage.setItem('places', JSON.stringify([...places, place]));
+  static async updatePlace(updatedPlace: Place): Promise<void> {
+    const placeDocRef = doc(db, 'places', updatedPlace.id);
+    await updateDoc(placeDocRef, updatedPlace as any);
   }
 
-  static updatePlace(updatedPlace: Place): void {
-    const places = this.getPlaces();
-    const updatedPlaces = places.map((place) =>
-      place.id === updatedPlace.id ? updatedPlace : place
-    );
-    localStorage.setItem('places', JSON.stringify(updatedPlaces));
-  }
-
-  static deletePlace(placeId: string): void {
-    const places = this.getPlaces();
-    const updatedPlaces = places.filter((place) => place.id !== placeId);
-    localStorage.setItem('places', JSON.stringify(updatedPlaces));
+  static async deletePlace(placeId: string): Promise<void> {
+    const placeDocRef = doc(db, 'places', placeId);
+    await deleteDoc(placeDocRef);
   }
 }
